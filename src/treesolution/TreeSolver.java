@@ -41,14 +41,15 @@ public class TreeSolver {
         this.smallestModel.clear();
         
         boolean changed = true;
+        int lastChanged = 0;        
         int i = 0;
         int prevSize = this.smallestModel.size();
-        while (changed) {
+        while (changed || (lastChanged != i)) {
             changed = false;
-//            resolveNode(this.trees.get(i), i);
             this.trees.get(i).fire(null, this.smallestModel);
             if (prevSize != this.smallestModel.size()) {
                 changed = true;
+                lastChanged = i;
                 prevSize = this.smallestModel.size();
             }
             i++;
@@ -56,29 +57,6 @@ public class TreeSolver {
         }
         return this.smallestModel;
     }
-
-//    private void resolveNode(NodeRule node, int index) {
-//        if (node != null) {
-//            if (node.getBodyNotSatisfiedCount() == 0) {
-//                if (node.getNodeLiteral() != null) {
-////                    applyHeadLiteral(node.getNodeLiteral().getLiteral()); 
-//                    
-//                }
-//            }
-//        }
-//    }
-
-//    private void applyHeadLiteral(Literal literal) {
-//        if (this.smallestModel.contains(literal)) {
-//            return;
-//        }
-//        this.smallestModel.add(literal);
-//        for (int i = 0; i < this.trees.size(); i++) {
-//            if (this.trees.get(i).getRule().getBody().contains(literal)) {
-//                this.trees.get(i).setBodyNotSatisfiedCount(this.trees.get(i).getBodyNotSatisfiedCount() - 1);
-//            }
-//        }
-//    }
     
     /**
      * @return rules

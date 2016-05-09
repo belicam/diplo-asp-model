@@ -34,7 +34,7 @@ public class Rule {
         ArrayList<NodeLiteral> nodeBody = cache.getCachedNodeLiteral(this.body);
         
         NodeRule nr = new NodeRule(this, nodeHead);        
-        nodeBody.stream().forEach(n -> n.setNodeRule(nr));
+        nodeBody.stream().forEach(n -> n.addNodeRule(nr));
         
         return nr;
     }

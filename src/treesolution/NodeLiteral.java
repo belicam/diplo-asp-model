@@ -16,7 +16,7 @@ import java.util.HashSet;
 public class NodeLiteral extends Node {
 
     private Literal literal;
-    private NodeRule rule;
+    private ArrayList<NodeRule> nrules;
 
     private boolean derived = false;
 
@@ -25,17 +25,18 @@ public class NodeLiteral extends Node {
 
     public NodeLiteral(Literal literal) {
         this.literal = literal;
-        this.rule = null;
+        this.nrules = new ArrayList<>();
     }
 
     public NodeLiteral(Literal literal, NodeRule rule) {
         this.literal = literal;
-        this.rule = rule;
+        this.nrules = new ArrayList<>();
+        this.nrules.add(rule);
     }
 
     public void fire(HashSet<Literal> smodel) {
-        if (this.rule != null) {
-            this.rule.fire(this, smodel);
+        if (!this.nrules.isEmpty()) {
+            this.nrules.stream().forEach(nr -> nr.fire(this, smodel));
             derived = true;
         }
     }
@@ -57,20 +58,17 @@ public class NodeLiteral extends Node {
     /**
      * @return the rule
      */
-    public NodeRule getNodeRule() {
-        return rule;
+    public ArrayList<NodeRule> getNodeRules() {
+        return nrules;
     }
 
-    /**
-     * @param rule the rule to set
-     */
-    public void setNodeRule(NodeRule rule) {
-        this.rule = rule;
+    public void addNodeRule(NodeRule rule) {
+        this.nrules.add(rule);
     }
 
     @Override
     public String toString() {
-        return (this.rule == null ? "" : this.rule.toString() + " <= ") + "L(" + this.literal + ")";
+        return "R" + this.nrules.toString() + " L" + this.literal.toString();
     }
 
     /**
