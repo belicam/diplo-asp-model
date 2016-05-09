@@ -5,8 +5,9 @@
  */
 package treesolution;
 
+import core.Literal;
 import core.Rule;
-import java.util.Objects;
+import java.util.HashSet;
 
 /**
  *
@@ -36,6 +37,20 @@ public class NodeRule extends Node {
         this.bodyNotSatisfiedCount = rule.getBody().size();
     }
 
+    public void fire(NodeLiteral nlit, HashSet<Literal> smodel) {
+        if (nlit != null) {
+            if (!nlit.isDerived()) {
+                bodyNotSatisfiedCount--;
+            }
+        }
+        if (bodyNotSatisfiedCount == 0) {
+            if (!this.literal.isDerived()) {
+                smodel.add(this.literal.getLiteral());
+                this.literal.fire(smodel);
+            }
+        }
+    }
+        
     /**
      * @return the rule
      */

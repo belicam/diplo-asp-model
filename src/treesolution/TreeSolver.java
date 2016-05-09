@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import core.Literal;
 import core.Rule;
+import java.util.function.Consumer;
 
 /**
  *
@@ -30,8 +31,8 @@ public class TreeSolver {
     }
 
     private void generateRuleTree() {
-        this.rules.stream().map((r) -> r.compile(c)).forEach((compiled) -> {
-            trees.add(compiled);
+        this.rules.stream().forEach((Rule r) -> {
+            trees.add(r.compile(c));
         });
     }
 
@@ -44,7 +45,8 @@ public class TreeSolver {
         int prevSize = this.smallestModel.size();
         while (changed) {
             changed = false;
-            resolveNode(this.trees.get(i), i);
+//            resolveNode(this.trees.get(i), i);
+            this.trees.get(i).fire(null, this.smallestModel);
             if (prevSize != this.smallestModel.size()) {
                 changed = true;
                 prevSize = this.smallestModel.size();
@@ -55,16 +57,16 @@ public class TreeSolver {
         return this.smallestModel;
     }
 
-    private void resolveNode(NodeRule node, int index) {
-        if (node != null) {
-            if (node.getBodyNotSatisfiedCount() == 0) {
-                if (node.getNodeLiteral() != null) {
-//                    applyHeadLiteral(node.getNodeLiteral().getLiteral()); 
-                    
-                }
-            }
-        }
-    }
+//    private void resolveNode(NodeRule node, int index) {
+//        if (node != null) {
+//            if (node.getBodyNotSatisfiedCount() == 0) {
+//                if (node.getNodeLiteral() != null) {
+////                    applyHeadLiteral(node.getNodeLiteral().getLiteral()); 
+//                    
+//                }
+//            }
+//        }
+//    }
 
 //    private void applyHeadLiteral(Literal literal) {
 //        if (this.smallestModel.contains(literal)) {
