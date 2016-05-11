@@ -40,21 +40,8 @@ public class TreeSolver {
     public HashSet<Literal> findSmallestModel() {
         this.smallestModel.clear();
         
-        boolean changed = true;
-        int lastChanged = 0;        
-        int i = 0;
-        int prevSize = this.smallestModel.size();
-        while (changed || (lastChanged != i)) {
-            changed = false;
-            this.trees.get(i).fire(null, this.smallestModel);
-            if (prevSize != this.smallestModel.size()) {
-                changed = true;
-                lastChanged = i;
-                prevSize = this.smallestModel.size();
-            }
-            i++;
-            i %= this.trees.size();
-        }
+        this.trees.stream().forEach(r -> r.fire(null, this.smallestModel));
+
         return this.smallestModel;
     }
     

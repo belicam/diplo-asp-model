@@ -14,23 +14,24 @@ import java.util.HashSet;
  * @author martin
  */
 public class NodeRule extends Node {
+
     private Rule rule;
     private NodeLiteral literal;
-    
+
     private int bodyNotSatisfiedCount;
-    
+
     public NodeRule() {
         this.rule = new Rule();
         this.literal = null;
         this.bodyNotSatisfiedCount = 0;
     }
-    
+
     public NodeRule(Rule rule, NodeLiteral literal) {
         this.rule = rule;
         this.literal = literal;
         this.bodyNotSatisfiedCount = rule.getBody().size();
     }
-   
+
     public NodeRule(Rule rule) {
         this.rule = rule;
         this.literal = null;
@@ -39,18 +40,14 @@ public class NodeRule extends Node {
 
     public void fire(NodeLiteral nlit, HashSet<Literal> smodel) {
         if (nlit != null) {
-            if (!nlit.isDerived()) {
-                bodyNotSatisfiedCount--;
-            }
+            bodyNotSatisfiedCount--;
         }
         if (bodyNotSatisfiedCount == 0) {
-            if (!this.literal.isDerived()) {
-                smodel.add(this.literal.getLiteral());
-                this.literal.fire(smodel);
-            }
+            smodel.add(this.literal.getLiteral());
+            this.literal.fire(smodel);
         }
     }
-        
+
     /**
      * @return the rule
      */
@@ -78,7 +75,7 @@ public class NodeRule extends Node {
     public void setNodeLiteral(NodeLiteral literal) {
         this.literal = literal;
     }
-    
+
     @Override
     public String toString() {
         return (this.literal == null ? "" : this.literal.toString() + " <= ") + "R(" + this.rule.toString() + ")";
@@ -97,5 +94,5 @@ public class NodeRule extends Node {
     public void setBodyNotSatisfiedCount(int bodyNotSatisfiedCount) {
         this.bodyNotSatisfiedCount = bodyNotSatisfiedCount;
     }
-    
+
 }

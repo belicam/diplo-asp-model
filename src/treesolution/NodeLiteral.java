@@ -36,8 +36,10 @@ public class NodeLiteral extends Node {
 
     public void fire(HashSet<Literal> smodel) {
         if (!this.nrules.isEmpty()) {
-            this.nrules.stream().forEach(nr -> nr.fire(this, smodel));
-            derived = true;
+            if (!derived) {
+                this.nrules.stream().forEach(nr -> nr.fire(this, smodel));
+                derived = true;
+            }
         }
     }
 
